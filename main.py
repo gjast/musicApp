@@ -102,6 +102,13 @@ class MainResponse:
             print('Track not found')
             return False
    
+    async def LikeTrack(self, track_id=None, user_id=None) -> bool:
+        return await self.client.users_likes_tracks_add(track_ids=track_id, user_id=user_id)
+    
+    async def DislikeTrack(self, track_id=None, user_id=None) -> bool:
+        return await self.client.users_likes_tracks_remove(track_ids=track_id, user_id=user_id)
+         
+    
 # class for work with "my wawe"
 class MyWaweClient(MainResponse):
 
@@ -131,18 +138,18 @@ class MyWaweClient(MainResponse):
    
 async def main():
     token = os.getenv('TOKEN')
-    # main_response = await MainResponse(token).init()
-    # info = await main_response.DownloadTrack(track_id=66190680)
-    # print(info)
+    main_response = await MainResponse(token).init()
+    uid = await main_response.getAccountInfo()
+    uid = uid['uid']
+    print(uid)
+    info = await main_response.LikeAndDislikeTrack(track_id=66190680, user_id=uid)
+    print(info)
 
     
-    wawe = await MyWaweClient(token).init()
-    tracks = await wawe.getMyWawe()
+    # wawe = await MyWaweClient(token).init()
+    # tracks = await wawe.getMyWawe()
     # print(tracks.sequence)
-    for i in range(5):
-        print('============================================================')
-        print(tracks.sequence[i].track.title)
-        print('============================================================')
+    
 
 
 
