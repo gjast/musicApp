@@ -1,27 +1,12 @@
-
-# client = Client('y0_AgAAAABldaDNAAG8XgAAAAEKnK0JAAB7iUrEOw9H6qRMzmG_4LpBOeaz-w').init()
-# # p = client.users_likes_tracks()[0].fetch_track().id
-# # c = client.tracksDownloadInfo(track_id=p, get_direct_links=True)[0]['direct_link']
-
-# v = client.rotor_station_settings2(
-#         station='user:onyourwave',
-#         mood_energy='active',  # 'active' соответствует бодрому настроению
-#         diversity='default'    # 'default' для сбалансированной подборки
-#     )
-# station_tracks_result = client.rotor_station_tracks('user:onyourwave')
-# for i in range(5):
-# 	print('============================================================')
-# 	print(station_tracks_result.sequence[i])
-# 	print('============================================================')
-
-# v = client.tracksDownloadInfo(track_id='6698907', get_direct_links=True)[0]['direct_link']
-# print(v)
 import asyncio
 from yandex_music import ClientAsync
 from yandex_music.exceptions import NotFoundError
 import aiohttp
 import colorgram
 from io import BytesIO
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 class MainResponse:
     #constructor
@@ -145,7 +130,7 @@ class MyWaweClient(MainResponse):
 
    
 async def main():
-    token = 'y0_AgAAAABldaDNAAG8XgAAAAEKnK0JAAB7iUrEOw9H6qRMzmG_4LpBOeaz-w'
+    token = os.getenv('TOKEN')
     # main_response = await MainResponse(token).init()
     # info = await main_response.DownloadTrack(track_id=66190680)
     # print(info)

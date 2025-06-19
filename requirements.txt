@@ -12,6 +12,7 @@ multidict==6.5.0
 pillow==11.2.1
 propcache==0.3.2
 PySocks==1.7.1
+python-dotenv==1.1.0
 requests==2.32.4
 urllib3==2.5.0
 yandex-music==2.2.0
