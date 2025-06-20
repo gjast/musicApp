@@ -166,15 +166,21 @@ class MyWaweClient(MainResponse):
         tracksWawe = await self.client.rotor_station_tracks(station='user:onyourwave', settings2=True, queue=queue)
 
         return [
-        {
-            'title': item.track.title,                         # название трека
-            'liked': item.liked,                               # лайкнут или нет
-            'name':item.track.artists[0].name,               # имя исполнителя
-            'avatar': f'https://{item.track.artists[0].cover.uri[:-2]}200x200',   # обложка исполнителя
-            'imgAlbum': 'https://{item.track.albums[0].cover_uri[:-2]}400x400'     # обложка альбома
-        }
-        for item in tracksWawe.sequence
-    ]
+            {
+                "track_id": item.track.id,
+                "title": item.track.title,
+                "liked": item.liked,
+                "name": item.track.artists[0].name,
+                "avatar": f'https://{item.track.artists[0].cover.uri[:-2]}200x200',
+                "imgAlbum": f'https://{item.track.albums[0].cover_uri[:-2]}400x400'
+            }
+            for item in tracksWawe.sequence
+        ] + [
+            {
+                "batch_id": tracksWawe.batch_id
+            }
+        ]
+
     
 
     async def TrackFeedBackRadioStarted(self, batch_id):
