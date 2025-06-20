@@ -37,22 +37,28 @@ class MainResponse:
         }
     
     # metod get liked track(only this, track_id<-number in playlist )
-    async def getLikedTrack(self, track_id=None) -> dict:
+    async def getLikedTrack(self, track_id: int) -> dict:
         likedTrack = await self.client.users_likes_tracks()
         fetchTrack = await likedTrack[track_id].fetch_track_async()
         return fetchTrack
-        
+
+    # medod check liked track
+    async def isTrackLiked(self, track_id: str | int) -> bool:
+            liked = (await self.client.users_likes_tracks()).tracks
+            return any(track.id == str(track_id) for track in liked)
+
     # metod get link for play track
-    async def getInfoDownloadTrack(self, track_id=None) -> dict:
-        trackInfo = await self.client.tracks_download_info(track_id=track_id, get_direct_links=True)
-        return trackInfo[-1]
+    async def getInfoDownloadTrack(self, track_id: str | int) -> dict:
+        trackInfo = (await self.client.tracks_download_info(track_id=track_id, get_direct_links=True))
+        return [x for x in trackInfo if x['bitrate_in_kbps'] == 320]
     
     # metod get info about track (title, avatarTrack, artist, avatarArtist)
-    async def getInfoTrack(self, track_id=None) -> dict:
+    async def getInfoTrack(self, track_id: str | int) -> dict:
         info = (await self.client.tracks([track_id]))[0]
         artist = info.artists
         
         return {
+            "all" : info,
             "title": info.title,
             "avatarTrack": f"https://{info.cover_uri[:-2]}400x400", 
             "artist": artist[0].name,
@@ -60,7 +66,7 @@ class MainResponse:
         }
 
     # metod get dominant color
-    async def getTrackColor(self, track_id=None) -> str | None:
+    async def getTrackColor(self, track_id: str | int) -> str | None:
       
         track_info = await self.getInfoTrack(track_id)  # обязательно await
         cover_url = track_info.get("avatarTrack")
@@ -93,7 +99,7 @@ class MainResponse:
             return None
         
     # metod download track
-    async def DownloadTrack(self, track_id=None) -> bool:
+    async def DownloadTrack(self, track_id: str | int) -> bool:
         try:
             downloadInfo = await self.getInfoDownloadTrack(track_id)
             await downloadInfo.download_async('rr.mp3')
@@ -102,12 +108,28 @@ class MainResponse:
             print('Track not found')
             return False
    
-    async def LikeTrack(self, track_id=None, user_id=None) -> bool:
-        return await self.client.users_likes_tracks_add(track_ids=track_id, user_id=user_id)
-    
-    async def DislikeTrack(self, track_id=None, user_id=None) -> bool:
-        return await self.client.users_likes_tracks_remove(track_ids=track_id, user_id=user_id)
+   #metod LikeAndDislikeTrack (add or remove track from playlist "favorites")
+    async def LikeAndDislikeTrack(self, track_id: str | int, user_id=None) -> bool:
+        try:
+            is_liked = await self.isTrackLiked(track_id)
+
+            if is_liked:
+                await self.client.users_likes_tracks_remove(track_ids=track_id, user_id=user_id)
+            else:
+                await self.client.users_likes_tracks_add(track_ids=track_id, user_id=user_id)
+
+            return True
+
+        except Exception as e:
+            return e
          
+    #metod add hate track      
+    async def HateTrack(self, track_id: str | int):
+        try:
+            await self.client.users_dislikes_tracks_add(track_ids=track_id)
+            return True
+        except Exception as e:
+            return e
     
 # class for work with "my wawe"
 class MyWaweClient(MainResponse):
@@ -138,11 +160,13 @@ class MyWaweClient(MainResponse):
    
 async def main():
     token = os.getenv('TOKEN')
+    #113973529
     main_response = await MainResponse(token).init()
+    myWawe = await MyWaweClient(token).init()
     uid = await main_response.getAccountInfo()
     uid = uid['uid']
     print(uid)
-    info = await main_response.LikeAndDislikeTrack(track_id=66190680, user_id=uid)
+    info = await main_response.HateTrack(track_id=113973529)
     print(info)
 
     
@@ -155,17 +179,3 @@ async def main():
 
 if __name__ == '__main__':
     asyncio.run(main())
-
-
-
-# p = MainResponse('y0_AgAAAABldaDNAAG8XgAAAAEKnK0JAAB7iUrEOw9H6qRMzmG_4LpBOeaz-w')
-# # Пример использования нового метода
-# track_id_to_check = 66190680
-# # print(p.getInfoTrack(track_id_to_check))
-# color = p.getTrackColor(track_id_to_check)
-# if color:
-#     print(f"Доминирующий цвет трека {track_id_to_check}: {color}")
-
-# o = MyWaweClient('y0_AgAAAABldaDNAAG8XgAAAAEKnK0JAAB7iUrEOw9H6qRMzmG_4LpBOeaz-w')
-# print(o.changeSettingsWawe(mood_energy='active', diversity='default', language='russian', type_='rotor'))
-# print(o.getMyWawe().sequence[0])
