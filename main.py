@@ -6,6 +6,8 @@ import colorgram
 from io import BytesIO
 from dotenv import load_dotenv
 import os
+from datetime import datetime
+
 load_dotenv()
 
 class MainResponse:
@@ -33,7 +35,7 @@ class MainResponse:
         return {
             "uid": self.uid,
             "login": self.login,
-            "full_name": self.full_name
+            "full_name": self.full_name,
         }
     
     # metod get liked track(only this, track_id<-number in playlist )
@@ -57,8 +59,10 @@ class MainResponse:
         info = (await self.client.tracks([track_id]))[0]
         artist = info.artists
         
+        
         return {
-            "all" : info,
+            # "all" : info,
+            # "like": info.like,
             "title": info.title,
             "avatarTrack": f"https://{info.cover_uri[:-2]}400x400", 
             "artist": artist[0].name,
@@ -131,6 +135,10 @@ class MainResponse:
         except Exception as e:
             return e
     
+
+
+
+
 # class for work with "my wawe"
 class MyWaweClient(MainResponse):
 
@@ -151,29 +159,64 @@ class MyWaweClient(MainResponse):
         return access
     
     # medod get track from "my wawe"
-    async def getMyWawe(self, mood_energy='all', diversity='default', language='any', type_='rotor'):
+    async def getMyWawe(self, mood_energy='all', diversity='default', language='any', type_='rotor', queue=None):
+
         await self.changeSettingsWawe(mood_energy, diversity, language, type_)
-        tracksWawe = await self.client.rotor_station_tracks(station='user:onyourwave', settings2=True)
 
-        return tracksWawe
+        tracksWawe = await self.client.rotor_station_tracks(station='user:onyourwave', settings2=True, queue=queue)
 
-   
+        return [
+        {
+            'title': item.track.title,                         # название трека
+            'liked': item.liked,                               # лайкнут или нет
+            'name':item.track.artists[0].name,               # имя исполнителя
+            'avatar': f'https://{item.track.artists[0].cover.uri[:-2]}200x200',   # обложка исполнителя
+            'imgAlbum': 'https://{item.track.albums[0].cover_uri[:-2]}400x400'     # обложка альбома
+        }
+        for item in tracksWawe.sequence
+    ]
+    
+
+    async def TrackFeedBackRadioStarted(self, batch_id):
+        try:
+            return await self.client.rotor_station_feedback_radio_started(station="user:onyourwave", from_=None, batch_id=batch_id, timestamp=datetime.now().timestamp())
+        except Exception as e:
+            return e
+       
+    async def TrackFeedBackTrackStarted(self, track_id, batch_id):
+        try:
+            return await self.client.rotor_station_feedback_radio_stopped(station="user:onyourwave", track_id=track_id, batch_id=batch_id, timestamp=datetime.now().timestamp())
+        except Exception as e:
+            return e
+
+    async def TrackFeedBackTrackFinished(self, track_id, batch_id, total_played_seconds=None):
+        try:
+            return await self.client.rotor_station_feedback_track_finished(station="user:onyourwave", track_id=track_id,  total_played_seconds=total_played_seconds, batch_id=batch_id, timestamp=datetime.now().timestamp())
+        except Exception as e:
+            return e
+
+    async def TrackFeedBackTrackSkipped(self, track_id, total_played_seconds, batch_id):
+        try:
+            return await self.client.rotor_station_feedback_track_skip(station="user:onyourwave", track_id=track_id, total_played_seconds=total_played_seconds, batch_id=batch_id, timestamp=datetime.now().timestamp())
+        except Exception as e:
+            return e
+
+
+
 async def main():
     token = os.getenv('TOKEN')
     #113973529
-    main_response = await MainResponse(token).init()
-    myWawe = await MyWaweClient(token).init()
-    uid = await main_response.getAccountInfo()
-    uid = uid['uid']
-    print(uid)
-    info = await main_response.HateTrack(track_id=113973529)
-    print(info)
+    # main_response = await MainResponse(token).init()
+    # uid = await main_response.getAccountInfo()
+    # uid = uid['uid']
+    
+    # info = await main_response.getInfoTrack(track_id='113973529')
+    # print(info)
 
-    
-    # wawe = await MyWaweClient(token).init()
-    # tracks = await wawe.getMyWawe()
-    # print(tracks.sequence)
-    
+ 
+
+    wawe = await MyWaweClient(token).init()
+    print((await wawe.getMyWawe()))
 
 
 
