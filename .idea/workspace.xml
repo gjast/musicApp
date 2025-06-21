@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b68be4a7-ceee-4bfb-aba0-0f0ee3366036" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/musicApp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/musicApp/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicApp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/musicApp/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicApp/src-tauri/tauri.conf.json" beforeDir="false" afterPath="$PROJECT_DIR$/musicApp/src-tauri/tauri.conf.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicApp/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/musicApp/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicApp/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/musicApp/src/App.jsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="2yoJ93lENVMtiUgQOcRO0wcVGpt" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Node.js.App.jsx.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "frontend",
+    "last_opened_file_path": "C:/Users/karim/Desktop/MusicApp",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "C:\\Program Files\\JetBrains\\WebStorm 2025.1.2",
+    "settings.editor.selected.configurable": "preferences.sourceCode"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-WS-251.26094.131" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b68be4a7-ceee-4bfb-aba0-0f0ee3366036" name="Changes" comment="" />
+      <created>1750185729788</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750185729788</updated>
+      <workItem from="1750185845014" duration="233000" />
+      <workItem from="1750494839354" duration="1826000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
