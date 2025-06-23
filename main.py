@@ -150,7 +150,7 @@ class MyWaweClient(MainResponse):
     # diverdity (`favorite`, `popular`, `discover`, `default`)
     # language (`russian`, `not-russian`, `any`)
     # type_ (`rotor`, `generative`)
-    async def changeSettingsWawe(self, mood_energy='all', diversity='default', language='any', type_='rotor') -> bool:
+    async def changeSettingsWawe(self, mood_energy='all', diversity='default', language='any', type_='generative') -> bool:
         access = await self.client.rotor_station_settings2( station='user:onyourwave',
             mood_energy=mood_energy, 
             diversity=diversity,
@@ -159,7 +159,7 @@ class MyWaweClient(MainResponse):
         return access
     
     # medod get track from "my wawe"
-    async def getMyWawe(self, mood_energy='all', diversity='default', language='any', type_='rotor', queue=None):
+    async def getMyWawe(self, mood_energy='all', diversity='default', language='any', type_='generative', queue=None):
 
         await self.changeSettingsWawe(mood_energy, diversity, language, type_)
 
@@ -171,8 +171,8 @@ class MyWaweClient(MainResponse):
                 "title": item.track.title,
                 "liked": item.liked,
                 "name": item.track.artists[0].name,
-                "avatar": f'https://{item.track.artists[0].cover.uri[:-2]}200x200',
-                "imgAlbum": f'https://{item.track.albums[0].cover_uri[:-2]}400x400'
+                "avatar": f'https://{item.track.artists[0].cover.uri[:-2]}800x800',
+                "imgAlbum": f'https://{item.track.albums[0].cover_uri[:-2]}800x800'
             }
             for item in tracksWawe.sequence
         ] + [
@@ -209,22 +209,19 @@ class MyWaweClient(MainResponse):
 
 
 
+
+import os
+import asyncio
+from datetime import datetime
+
 async def main():
     token = os.getenv('TOKEN')
-    #113973529
-    # main_response = await MainResponse(token).init()
-    # uid = await main_response.getAccountInfo()
-    # uid = uid['uid']
-    
-    # info = await main_response.getInfoTrack(track_id='113973529')
-    # print(info)
-
- 
-
     wawe = await MyWaweClient(token).init()
-    print((await wawe.getMyWawe()))
-
-
+    print(await wawe.getMyWawe())
+    #133025331
+    # ma = await MainResponse(token).init()
+    # print(await ma.getInfoDownloadTrack(133025331))
 
 if __name__ == '__main__':
+    import asyncio
     asyncio.run(main())
