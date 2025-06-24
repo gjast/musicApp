@@ -140,7 +140,7 @@ class MainResponse:
 
 
 # class for work with "my wawe"
-class MyWaweClient(MainResponse):
+class MyWaveClient(MainResponse):
 
     def __init__(self, token):
         super().__init__(token)
@@ -150,7 +150,7 @@ class MyWaweClient(MainResponse):
     # diverdity (`favorite`, `popular`, `discover`, `default`)
     # language (`russian`, `not-russian`, `any`)
     # type_ (`rotor`, `generative`)
-    async def changeSettingsWawe(self, mood_energy='all', diversity='default', language='any', type_='generative') -> bool:
+    async def changeSettingsWave(self, mood_energy='all', diversity='default', language='any', type_='generative') -> bool:
         access = await self.client.rotor_station_settings2( station='user:onyourwave',
             mood_energy=mood_energy, 
             diversity=diversity,
@@ -159,7 +159,7 @@ class MyWaweClient(MainResponse):
         return access
     
     # medod get track from "my wawe"
-    async def getMyWawe(self, mood_energy='all', diversity='default', language='any', type_='generative', queue=None):
+    async def getMyWave(self, mood_energy='all', diversity='default', language='any', type_='generative', queue=None):
 
         await self.changeSettingsWawe(mood_energy, diversity, language, type_)
 
@@ -211,12 +211,11 @@ class MyWaweClient(MainResponse):
 
 async def main():
     token = os.getenv('TOKEN')
-    wawe = await MyWaweClient(token).init()
-    print(await wawe.getMyWawe())
+    wave = await MyWaveClient(token).init()
+    print(await wave.getMyWave())
     #133025331
     # ma = await MainResponse(token).init()
     # print(await ma.getInfoDownloadTrack(133025331))
 
 if __name__ == '__main__':
-    import asyncio
     asyncio.run(main())
