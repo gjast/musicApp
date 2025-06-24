@@ -209,11 +209,6 @@ class MyWaweClient(MainResponse):
 
 
 
-
-import os
-import asyncio
-from datetime import datetime
-
 async def main():
     token = os.getenv('TOKEN')
     wawe = await MyWaweClient(token).init()
