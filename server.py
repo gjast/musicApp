@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, Query
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional, Union
 from pydantic import BaseModel
 import os
@@ -7,6 +8,18 @@ from main import MainResponse, MyWaveClient
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:1420",  # твой Tauri UI
+    "http://127.0.0.1:1420",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,            # откуда можно делать запросы
+    allow_credentials=True,
+    allow_methods=["*"],              # какие методы разрешены (GET, POST и т.д.)
+    allow_headers=["*"],              # какие заголовки разрешены
+)
 
 # ✅ 1. Модель для getAccountInfo
 class AccountInfo(BaseModel):
